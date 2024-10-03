@@ -1,0 +1,68 @@
+collections = {}
+def createCollection(p_collection_name):
+    collections[p_collection_name] = []
+def indexData(p_collection_name, p_exclude_column):
+    collection = collections.get(p_collection_name)
+    if collection:
+        for emp in collection:
+            emp.pop(p_exclude_column, None)
+    else:
+        print(f"Collection {p_collection_name} does not exist.")
+def searchByColumn(p_collection_name, p_column_name, p_column_value):
+    collection = collections.get(p_collection_name)
+    if collection:
+        result = [emp for emp in collection if emp.get(p_column_name) == p_column_value]
+        return result
+    else:
+        print(f"Collection {p_collection_name} does not exist.")
+        return []
+def getEmpCount(p_collection_name):
+    collection = collections.get(p_collection_name)
+    if collection:
+        return len(collection)
+    else:
+        print(f"Collection {p_collection_name} does not exist.")
+        return 0
+def delEmpById(p_collection_name, p_employee_id):
+    collection = collections.get(p_collection_name)
+    if collection:
+        collections[p_collection_name] = [emp for emp in collection if emp.get('EmployeeID') != p_employee_id]
+    else:
+        print(f"Collection {p_collection_name} does not exist.")
+def getDepFacet(p_collection_name):
+    collection = collections.get(p_collection_name)
+    if collection:
+        dep_count = {}
+        for emp in collection:
+            department = emp.get('Department')
+            if department:
+                dep_count[department] = dep_count.get(department, 0) + 1
+        return dep_count
+    else:
+        print(f"Collection {p_collection_name} does not exist.")
+        return {}
+employees = [
+    {'EmployeeID': 'E02001', 'Name': 'John Doe', 'Department': 'IT', 'Gender': 'Male'},
+    {'EmployeeID': 'E02002', 'Name': 'Jane Smith', 'Department': 'HR', 'Gender': 'Female'},
+    {'EmployeeID': 'E02003', 'Name': 'Alice Johnson', 'Department': 'IT', 'Gender': 'Female'},
+]
+def addSampleData(p_collection_name, data):
+    if p_collection_name in collections:
+        collections[p_collection_name].extend(data)
+    else:
+        print(f"Collection {p_collection_name} does not exist.")
+v_nameCollection = 'Hash_PRAVEEN BABU'
+v_phoneCollection = 'Hash_9982'
+createCollection(v_nameCollection)
+createCollection(v_phoneCollection)
+addSampleData(v_nameCollection, employees)
+print(f"Employee count in {v_nameCollection}: {getEmpCount(v_nameCollection)}")
+indexData(v_nameCollection, 'Department')
+indexData(v_phoneCollection, 'Gender')
+delEmpById(v_nameCollection, 'E02003')
+print(f"Employee count after deletion in {v_nameCollection}: {getEmpCount(v_nameCollection)}")
+print(f"Search by Department in {v_nameCollection}: {searchByColumn(v_nameCollection, 'Department', 'IT')}")
+print(f"Search by Gender in {v_nameCollection}: {searchByColumn(v_nameCollection, 'Gender', 'Male')}")
+print(f"Search by Department in {v_phoneCollection}: {searchByColumn(v_phoneCollection, 'Department', 'IT')}")
+print(f"Department Facets in {v_nameCollection}: {getDepFacet(v_nameCollection)}")
+print(f"Department Facets in {v_phoneCollection}: {getDepFacet(v_phoneCollection)}")
