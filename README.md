@@ -23,7 +23,6 @@ func findSecondLargest(arr []int) (int, error) {
 	return secondLargest, nil
 }
 func main() {
-	// Sample input 1
 	arr1 := []int{5, 7, 12, 3, 9, 11}
 	secondLargest1, err1 := findSecondLargest(arr1)
 	if err1 != nil {
